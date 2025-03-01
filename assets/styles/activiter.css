@@ -1,0 +1,86 @@
+/* Styles généraux */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+
+}
+
+/* Conteneur principal */
+
+
+/* Titre principal */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 26px;
+}
+
+.wrapperActiviter{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+/* Carte d'activité */
+.card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease-in-out;
+    margin-right: 1em;
+    margin-left: 1em;
+    max-width: 30%;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* Titre de l'activité */
+.card-title {
+    color: #0077cc;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+/* Type d'activité */
+.card-type {
+    color: #555;
+    font-size: 16px;
+    font-style: italic;
+}
+
+/* Tableau des données */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table th {
+    background-color: #0077cc;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Ligne impaire pour un effet zébré */
+.table tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+/* Message si aucune activité */
+.message {
+    text-align: center;
+    color: red;
+    font-size: 18px;
+    margin-top: 20px;
+}
