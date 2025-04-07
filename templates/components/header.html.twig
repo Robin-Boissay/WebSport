@@ -1,0 +1,26 @@
+<header class="header">
+    <div class="header-left">
+        <a href="{{path('app_home')}}" class="icon icon-1">Home</a>
+
+        <a href="{{path('app_activiter')}}" class="icon icon-1">Activiter</a>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{path('app_type_activiter')}}" class="icon icon-2">Type Activiter</a>
+            <a href="{{path('app_proprieter_type_activiter')}}" class="icon icon-3">Proprieter Activiter</a>
+        {% endif %}
+    </div>
+
+    {% if not app.user %}
+        <div class="header-right">
+            <a href="{{ path('app_login') }}"class="icon icon-4">Login</a>
+        </div>
+    {% else %}
+        <div class="header-right">
+            <a href="{{ path('app_logout') }}" class="icon icon-5">Logout</a>
+        </div>
+    {% endif %}
+
+  
+</header>
+
+
+  

@@ -1,3 +1,157 @@
 body {
     background-color: skyblue;
 }
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+li,ol,ul,a {
+    list-style: none;
+    list-style-type: none;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
+/* ----- CSS pour la Grille de Cartes d'Activités ----- */
+
+/* Conteneur principal pour la grille */
+.card-grid-container {
+    display: grid;
+    /* Crée des colonnes responsives :
+       - auto-fill: autant de colonnes que possible.
+       - minmax(320px, 1fr): chaque colonne fait au moins 320px de large,
+         et prend une fraction de l'espace restant si plus large.
+         Ajuste 320px selon tes besoins.
+    */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px; /* Espace entre les cartes */
+    padding: 20px; /* Espace autour de la grille */
+    max-width: 1600px; /* Optionnel : limite la largeur sur très grands écrans */
+    margin: 0 auto; /* Centre la grille si max-width est défini */
+}
+
+/* Style de base pour chaque carte */
+.activiter-card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* Important pour les coins arrondis et le contenu */
+    display: flex; /* Permet d'organiser l'intérieur avec flexbox */
+    flex-direction: column; /* Empile les sections verticalement */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.activiter-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* En-tête de la carte */
+.card-header {
+    padding: 15px 20px;
+    background-color: #f8f9fa; /* Fond légèrement grisé pour l'en-tête */
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.card-header h2 {
+    margin: 0 0 5px 0; /* Ajuste les marges du titre */
+    font-size: 1.3em;
+    color: #333;
+}
+
+.card-header .activity-type {
+    margin: 0;
+    font-size: 0.95em;
+    color: #555;
+    font-weight: bold;
+}
+
+/* Corps de la carte */
+.card-body {
+    padding: 15px 20px;
+    flex-grow: 1; /* Permet au corps de prendre l'espace vertical restant */
+    /* Si le contenu du corps peut être très long et que tu veux un scroll *interne* à la carte: */
+    /* max-height: 400px; */ /* Ajuste la hauteur max */
+    /* overflow-y: auto; */ /* Ajoute une barre de scroll si nécessaire DANS la carte */
+}
+
+/* Style pour le tableau de données */
+.data-table {
+    width: 100%;
+    border-collapse: collapse; /* Fusionne les bordures */
+    margin-top: 10px; /* Espace au-dessus du tableau */
+    font-size: 0.9em; /* Taille de police légèrement réduite pour le tableau */
+}
+
+.data-table th,
+.data-table td {
+    border: 1px solid #eee;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top; /* Alignement en haut pour les cellules */
+}
+
+.data-table thead {
+    background-color: #e9ecef; /* Fond pour l'en-tête du tableau */
+    font-weight: 600; /* Police un peu plus grasse */
+}
+
+/* Optionnel : Lignes zébrées pour une meilleure lisibilité */
+.data-table tbody tr:nth-child(odd) {
+    background-color: #fdfdfd;
+}
+
+.data-table strong {
+    color: #000; /* Rend la valeur en gras plus visible */
+}
+
+/* Style pour le message "Aucune donnée" */
+.no-data-message {
+    color: #888;
+    font-style: italic;
+    text-align: center;
+    padding: 20px 0;
+}
+
+/* Wrapper pour la responsivité du tableau sur petits écrans */
+.table-responsive-wrapper {
+    overflow-x: auto; /* Ajoute un scroll horizontal SI le tableau est trop large */
+    margin-left: -20px; /* Compense le padding du card-body */
+    margin-right: -20px; /* Compense le padding du card-body */
+    padding-left: 20px; /* Ré-applique le padding */
+    padding-right: 20px; /* Ré-applique le padding */
+}
+/* Ajustement pour le tableau dans le wrapper */
+.table-responsive-wrapper .data-table {
+   min-width: 100%; /* Assure que le tableau essaie d'occuper l'espace */
+   margin-bottom: 0; /* Enlève la marge du bas si nécessaire */
+}
+
+
+/* Message si aucune activité n'est trouvée (placé dans la grille) */
+.no-activities {
+    grid-column: 1 / -1; /* Fait en sorte que ce message prenne toute la largeur de la grille */
+    text-align: center;
+    padding: 40px 20px;
+    color: #777;
+    font-size: 1.1em;
+}
+
+
+/* ----- Gestion du Scroll Général ----- */
+/*
+   IMPORTANT : Le scroll vertical de la page entière est géré par le navigateur.
+   Si le contenu de la page (ton .card-grid-container rempli de cartes)
+   dépasse la hauteur de la fenêtre, une barre de scroll apparaîtra automatiquement
+   sur la page. Tu n'as généralement pas besoin de CSS spécifique pour cela.
+   N'ajoute PAS 'height' et 'overflow-y: scroll' à '.card-grid-container'
+   sauf si tu veux explicitement une zone scrollable de hauteur fixe.
+*/

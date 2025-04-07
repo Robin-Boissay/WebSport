@@ -1,20 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil - Activités{% endblock %}
+
+{# Optionnel : Lie un fichier CSS spécifique si tu préfères ne pas tout mettre dans base.html.twig #}
+{% block stylesheets %}
+    {{ parent() }} {# Garde les styles de base #}
+    {# Décommente si tu crées un fichier CSS séparé public/css/activity-cards.css #}
+    {# <link rel="stylesheet" href="{{ asset('css/activity-cards.css') }}"> #}
+{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {# Ajout du conteneur pour la grille de cartes #}
+    <div class="card-grid-container">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        {% for activiter in activiters %}
+            {# La carte individuelle #}
+            <div class="activiter-card">
+                {# En-tête de la carte #}
+                <div class="card-header">
+                    {# Utilisation de null-coalescing operator pour éviter erreur si User est null #}
+                    <h2>Activité de {{ activiter.User.username ?? 'Utilisateur inconnu' }}</h2>
+                    {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
+                    <p class="activity-type">{{ activiter.typeActiviter.nomType ?? 'Type inconnu' }}</p>
+                </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/robin/PhpstormProjects/SportApp/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/robin/PhpstormProjects/SportApp/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+                {# Corps de la carte - Contenu principal #}
+                <div class="card-body">
+                    {% if activiter.donnees is not empty %}
+                        {# Rendre le tableau responsive en le mettant dans un div #}
+                        <div class="table-responsive-wrapper">
+                            <table class="table data-table">
+                                <thead> {# Utilise thead pour la sémantique et le style #}
+                                    <tr>
+                                        <th>Type de Donnée</th>
+                                        <th>Valeur</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for donnee in activiter.donnees %}
+                                        <tr>
+                                            {# Utilisation de null-coalescing operator #}
+                                            <td>{{ donnee.ProprieterActiviter.nomProprieter ?? 'Propriété inconnue' }}</td>
+                                            <td><strong>{{ donnee.valeur ?? 'N/A' }}</strong></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted no-data-message">Aucune donnée enregistrée.</p>
+                    {% endif %}
+                </div> {# Fin card-body #}
+
+            </div> {# Fin activiter-card #}
+        {% else %}
+            {# Message si aucune activité n'est trouvée #}
+            <p class="no-activities">Aucune activité à afficher pour le moment.</p>
+        {% endfor %}
+
+    </div> {# Fin card-grid-container #}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Ajoute ici des JS spécifiques si nécessaire #}
 {% endblock %}
