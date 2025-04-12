@@ -12,6 +12,8 @@
 
 {% block body %}
     {# Ajout du conteneur pour la grille de cartes #}
+    <a href="{{ path('app_activiter_create') }}" class="btn btn-primary">Crée une activiter</a>
+
     <div class="card-grid-container">
 
         {% for activiter in activiters %}
@@ -23,6 +25,7 @@
                     <h2>Activité de {{ activiter.User.username ?? 'Utilisateur inconnu' }}</h2>
                     {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
                     <p class="activity-type">{{ activiter.typeActiviter.nomType ?? 'Type inconnu' }}</p>
+                    <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
                 </div>
 
                 {# Corps de la carte - Contenu principal #}

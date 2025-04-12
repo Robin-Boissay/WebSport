@@ -37,11 +37,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Activiter>
      */
     #[ORM\OneToMany(targetEntity: Activiter::class, mappedBy: 'user', orphanRemoval: true)]
-    private Collection $Activiters;
+    #[ORM\OrderBy(['startedAt' => 'DESC'])]
+    private Collection $activiters;
+
+    /**
+     * @var Collection<int, Friend>
+     */
+    #[ORM\OneToMany(targetEntity: Friend::class, mappedBy: 'requester', orphanRemoval: true)]
+    private Collection $sentFriendRequests;
+
+    #[ORM\OneToMany(targetEntity: Friend::class, mappedBy: 'receiver', orphanRemoval: true)]
+    private Collection $receivedFriendRequests;
 
     public function __construct()
     {
-        $this->Activiters = new ArrayCollection();
+        $this->activiters = new ArrayCollection();
+        $this->sentFriendRequests = new ArrayCollection();
+        $this->receivedFriendRequests = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -124,13 +137,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getActiviters(): Collection
     {
-        return $this->Activiters;
+        return $this->activiters;
     }
 
     public function addActiviter(Activiter $activiter): static
     {
-        if (!$this->Activiters->contains($activiter)) {
-            $this->Activiters->add($activiter);
+        if (!$this->activiters->contains($activiter)) {
+            $this->activiters->add($activiter);
             $activiter->setUser($this);
         }
 
@@ -139,10 +152,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeActiviter(Activiter $activiter): static
     {
-        if ($this->Activiters->removeElement($activiter)) {
+        if ($this->activiters->removeElement($activiter)) {
             // set the owning side to null (unless already changed)
             if ($activiter->getUser() === $this) {
                 $activiter->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friend>
+     */
+    public function getSentFriendRequests(): Collection
+    {
+        return $this->sentFriendRequests;
+    }
+
+    public function addSentFriendRequests(Friend $friend): static
+    {
+        if (!$this->sentFriendRequests->contains($friend)) {
+            $this->sentFriendRequests->add($friend);
+            $friend->setRequester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSentFriendRequests(Friend $friend): static
+    {
+        if ($this->sentFriendRequests->removeElement($friend)) {
+            // set the owning side to null (unless already changed)
+            if ($friend->getRequester() === $this) {
+                $friend->setRequester(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Friend>
+     */
+    public function getReceivedFriendRequests(): Collection
+    {
+        return $this->receivedFriendRequests;
+    }
+
+    public function addReceivedFriendRequests(Friend $friend): static
+    {
+        if (!$this->receivedFriendRequests->contains($friend)) {
+            $this->receivedFriendRequests->add($friend);
+            $friend->setRequester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedFriendRequests(Friend $friend): static
+    {
+        if ($this->receivedFriendRequests->removeElement($friend)) {
+            // set the owning side to null (unless already changed)
+            if ($friend->getRequester() === $this) {
+                $friend->setRequester(null);
             }
         }
 

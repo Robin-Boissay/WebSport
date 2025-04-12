@@ -11,12 +11,31 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(EntityManagerInterface $em, Activiter $activiter): Response
+    public function index(EntityManagerInterface $em): Response
     {
-        $activiters = $em->getRepository(Activiter::class)->findAll();
+        $user = $this->getUser();
 
+        $friends = [];
+
+        foreach ($user->getSentFriendRequests() as $friendRequest) {
+            if ($friendRequest->getStatus() === 'accepted') {
+                $friends[] = $friendRequest->getReceiver();
+            }
+        }
+
+        foreach ($user->getReceivedFriendRequests() as $friendRequest) {
+            if ($friendRequest->getStatus() === 'accepted') {
+                $friends[] = $friendRequest->getRequester();
+            }
+        }
+
+        // On ajoute l'utilisateur lui-même
+        $users = array_merge([$user], $friends);
+
+        // On récupère toutes les activités
+        $activites = $em->getRepository(Activiter::class)->findByUsers($users);
         return $this->render('home/index.html.twig', [
-            'activiters' => $activiters,
+            'activiters' => $activites,
         ]);
     }
 }

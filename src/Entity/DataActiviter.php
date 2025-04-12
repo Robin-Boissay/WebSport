@@ -20,7 +20,7 @@ class DataActiviter
     #[ORM\JoinColumn(nullable: false)]
     private ?ProprieterTypeActiviter $ProprieterActiviter = null;
 
-    #[ORM\ManyToOne(inversedBy: 'donnees')]
+    #[ORM\ManyToOne(inversedBy: 'donnees', cascade: ['remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Activiter $activiter = null;
 

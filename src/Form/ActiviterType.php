@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ActiviterType extends AbstractType
 {
-    public function __construct(EntityManagerInterface $entityManager, Security $security)
+    public function __construct(private EntityManagerInterface $entityManager, private Security $security)
     {
         $this->entityManager = $entityManager;
         $this->security = $security;

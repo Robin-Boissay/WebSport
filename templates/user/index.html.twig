@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+<div> 
+<b>Mes amis :</b>
+{% for user in friendSent %}
+    {% if user.status == "accepted" %}
+        <div>
+            {{ user.receiver.username }}
+            <a href="{{path('app_profile', {'id':user.receiver.id})}}">Voir profil</a>
+        </div>
+    {% endif %}
+{% endfor %}
+{% for user in friendReceived %}
+    {% if user.status == "accepted" %}
+        <div>
+            {{ user.requester.username }}
+            <a href="{{path('app_profile', {'id':user.requester.id})}}">Voir profil</a>
+        </div>
+    {% endif %}
+{% endfor %}
+</div>
+
+<div>
+<b>Tout les utilisateurs:</b>
+{% for user in users %}
+    <div>{{ user.username }}</div>
+    <form action="{{ path('app_user_send_friend_request', {'id': user.id})}}" method="POST" > 
+        <button type="submit" >Ajouter amis </button>
+    </form>
+{% endfor %}
+</div>
+
+{% endblock %}

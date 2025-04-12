@@ -6,6 +6,7 @@ use App\Repository\ActiviterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 
 #[ORM\Entity(repositoryClass: ActiviterRepository::class)]
 class Activiter
@@ -20,7 +21,7 @@ class Activiter
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activiters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $User = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -31,6 +32,12 @@ class Activiter
      */
     #[ORM\OneToMany(targetEntity: DataActiviter::class, mappedBy: 'activiter', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $donnees;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $startedAt = null;
 
     public function __construct()
     {
@@ -61,12 +68,12 @@ class Activiter
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $user): static
     {
-        $this->User = $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -117,6 +124,30 @@ class Activiter
                 $donnee->setActiviter(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getStartedAt(): ?\DateTimeImmutable
+    {
+        return $this->startedAt;
+    }
+
+    public function setStartedAt(\DateTimeImmutable $startedAt): static
+    {
+        $this->startedAt = $startedAt;
 
         return $this;
     }

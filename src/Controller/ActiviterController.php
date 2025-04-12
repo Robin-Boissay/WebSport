@@ -42,13 +42,15 @@ final class ActiviterController extends AbstractController
     public function createActiviter( Request $request, EntityManagerInterface $em): Response
     {
 
-        $repo = $em->getRepository(TypeActiviter::class);
-        $type = $repo->find(8);
         $form = $this->createForm(ActiviterType2::class, new Activiter());
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $activiter = $form->getData();
-            return $this->redirectToRoute('app_activiter_create_final', ['id' => $activiter->getTypeActiviter()->getId(), 'nomActiviter' => $activiter->getNomActiviter()]);
+            $activiter->setCreatedAt(new \DateTimeImmutable());
+            $activiter->setUser($this->getUser());
+            $em->persist($activiter);
+            $em->flush();
+            return $this->redirectToRoute('app_activiter_create_final', ['activiter' => $activiter->getId()]);
         }
 
         return $this->render('activiter/pre_create.html.twig', [
@@ -56,12 +58,11 @@ final class ActiviterController extends AbstractController
         ]);
     }
 
-    #[Route('/activiter/create/{id}/{nomActiviter}', name: 'app_activiter_create_final')]
-    public function createActiviterFinal(TypeActiviter $typeActiviter, ?string $nomActiviter, Request $request, EntityManagerInterface $em): Response
+    #[Route('/activiter/create/{activiter}', name: 'app_activiter_create_final')]
+    public function createActiviterFinal(Activiter $activiter): Response
     {
         return $this->render('activiter/create.html.twig', [
-            "typeActiviter" => $typeActiviter,
-            "nomActiviter" => $nomActiviter,
+            'activiter' => $activiter,
         ]);
     }
 }

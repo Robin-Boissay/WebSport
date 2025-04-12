@@ -21,16 +21,8 @@ class ActiviterForm extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentWithFormTrait;
-    #[LiveProp(writable: true)]
-    public ?int $id = null;
 
-    #[LiveProp(writable: true)]
-    public ?TypeActiviter $typeActiviter = null;
-
-    #[LiveProp(writable: true)]
-    public ?string $nomActiviter = null;
-
-    #[LiveProp(fieldName: 'entity')]
+    #[LiveProp(fieldName: 'entity', writable: true)]
     public ?Activiter $activiter = null;
 
     private EntityManagerInterface $entityManager;
@@ -42,18 +34,7 @@ class ActiviterForm extends AbstractController
 
     protected function instantiateForm(): FormInterface
     {
-        if ($this->id !== null) {
-            $this->activiter = $this->entityManager->getRepository(Activiter::class)->find($this->id);
-            return $this->createForm(ActiviterType::class, $this->activiter, [
-                'test' => $this->activiter
-            ]);
-        }
-        $this->activiter = new Activiter();
-        $this->activiter->setNomActiviter($this->nomActiviter);
-        $this->activiter->setTypeActiviter($this->typeActiviter);
-        return $this->createForm(ActiviterType::class, $this->activiter ?? new Activiter(), [
-        ]);
-
+        return $this->createForm(ActiviterType::class, $this->activiter ?? new Activiter(), []);
     }
 
 

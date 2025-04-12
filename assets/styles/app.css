@@ -146,12 +146,3 @@ li,ol,ul,a {
 }
 
 
-/* ----- Gestion du Scroll Général ----- */
-/*
-   IMPORTANT : Le scroll vertical de la page entière est géré par le navigateur.
-   Si le contenu de la page (ton .card-grid-container rempli de cartes)
-   dépasse la hauteur de la fenêtre, une barre de scroll apparaîtra automatiquement
-   sur la page. Tu n'as généralement pas besoin de CSS spécifique pour cela.
-   N'ajoute PAS 'height' et 'overflow-y: scroll' à '.card-grid-container'
-   sauf si tu veux explicitement une zone scrollable de hauteur fixe.
-*/

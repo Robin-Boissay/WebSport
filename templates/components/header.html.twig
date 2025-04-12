@@ -3,6 +3,7 @@
         <a href="{{path('app_home')}}" class="icon icon-1">Home</a>
 
         <a href="{{path('app_activiter')}}" class="icon icon-1">Activiter</a>
+        <a href="{{path('app_user')}}" class="icon icon-1">Utilisateurs</a>
         {% if is_granted('ROLE_ADMIN') %}
             <a href="{{path('app_type_activiter')}}" class="icon icon-2">Type Activiter</a>
             <a href="{{path('app_proprieter_type_activiter')}}" class="icon icon-3">Proprieter Activiter</a>

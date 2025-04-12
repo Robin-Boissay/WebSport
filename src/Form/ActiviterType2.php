@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Activiter;
 use App\Entity\ProprieterTypeActiviter;
 use App\Entity\TypeActiviter;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
@@ -36,7 +37,14 @@ class ActiviterType2 extends AbstractType
         ])->add("typeActiviter", EntityType::class,[
             "label" => "Type de l'activiter",
             "class" => TypeActiviter::class,
-        ])->add("save", SubmitType::class,[]);
+            
+        ])->add("startedAt", DateTimeType::class,[
+            'label' => "Date de début",
+            'widget' => 'single_text',
+            'model_timezone' => 'UTC', // Convertit le modèle en UTC
+            'view_timezone' => 'Europe/Paris', // Affiche en heure locale (Paris)
+            ])
+        ->add("save", SubmitType::class,[]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

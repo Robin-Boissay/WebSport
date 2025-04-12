@@ -19,34 +19,20 @@ class ActiviterRepository extends ServiceEntityRepository
     public function findAllByUser(User $user): array
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.User = :user')
+            ->andWhere('a.user = :user')
             ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
 
-    //    /**
-    //     * @return Activiter[] Returns an array of Activiter objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findByUsers(array $users): array
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.user IN (:users)')
+            ->setParameter('users', $users)
+            ->orderBy('a.startedAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Activiter
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
