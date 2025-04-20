@@ -24,12 +24,19 @@ class TypeActiviter
     #[ORM\ManyToMany(targetEntity: ProprieterTypeActiviter::class, inversedBy: 'typeActiviters')]
     private Collection $proprieter;
 
+    /**
+     * @var Collection<int, ActiviterExercice>
+     */
+    #[ORM\OneToMany(targetEntity: ActiviterExercice::class, mappedBy: 'type_activiter', orphanRemoval: true)]
+    private Collection $activiterExercices;
+
 
 
     public function __construct()
     {
         $this->proprieter = new ArrayCollection();
         $this->proprieterTypeActiviters = new ArrayCollection();
+        $this->activiterExercices = new ArrayCollection();
     }
     public function __toString()
     {
@@ -98,6 +105,36 @@ class TypeActiviter
     {
         if ($this->proprieterTypeActiviters->removeElement($proprieterTypeActiviter)) {
             $proprieterTypeActiviter->removeTypeActiviter($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActiviterExercice>
+     */
+    public function getActiviterExercices(): Collection
+    {
+        return $this->activiterExercices;
+    }
+
+    public function addActiviterExercice(ActiviterExercice $activiterExercice): static
+    {
+        if (!$this->activiterExercices->contains($activiterExercice)) {
+            $this->activiterExercices->add($activiterExercice);
+            $activiterExercice->setTypeActiviter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiviterExercice(ActiviterExercice $activiterExercice): static
+    {
+        if ($this->activiterExercices->removeElement($activiterExercice)) {
+            // set the owning side to null (unless already changed)
+            if ($activiterExercice->getTypeActiviter() === $this) {
+                $activiterExercice->setTypeActiviter(null);
+            }
         }
 
         return $this;

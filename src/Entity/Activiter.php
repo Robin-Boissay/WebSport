@@ -23,25 +23,21 @@ class Activiter
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TypeActiviter $typeActiviter = null;
-
-    /**
-     * @var Collection<int, DataActiviter>
-     */
-    #[ORM\OneToMany(targetEntity: DataActiviter::class, mappedBy: 'activiter', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $donnees;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $startedAt = null;
 
+    /**
+     * @var Collection<int, ActiviterExercice>
+     */
+    #[ORM\OneToMany(targetEntity: ActiviterExercice::class, mappedBy: 'activiterId', orphanRemoval: true)]
+    private Collection $activiterExercices;
+
     public function __construct()
     {
-        $this->donnees = new ArrayCollection();
+        $this->activiterExercices = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -78,56 +74,6 @@ class Activiter
         return $this;
     }
 
-    public function getTypeActiviter(): ?TypeActiviter
-    {
-        return $this->typeActiviter;
-    }
-
-    public function setTypeActiviter(?TypeActiviter $typeActiviter): static
-    {
-        $this->typeActiviter = $typeActiviter;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, DataActiviter>
-     */
-    public function getDonnees(): Collection
-    {
-        return $this->donnees;
-    }
-
-    public function setDonnees(Collection $donnees): self
-    {
-        $this->donnees = $donnees;
-
-        return $this;
-    }
-
-
-    public function addDonnees(DataActiviter $donnee): self
-    {
-        if (!$this->donnees->contains($donnee)) {
-            $this->donnees->add($donnee);
-            $donnee->setActiviter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDonnees(DataActiviter $donnee): static
-    {
-        if ($this->donnees->removeElement($donnee)) {
-            // set the owning side to null (unless already changed)
-            if ($donnee->getActiviter() === $this) {
-                $donnee->setActiviter(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -148,6 +94,36 @@ class Activiter
     public function setStartedAt(\DateTimeImmutable $startedAt): static
     {
         $this->startedAt = $startedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActiviterExercice>
+     */
+    public function getActiviterExercices(): Collection
+    {
+        return $this->activiterExercices;
+    }
+
+    public function addActiviterExercice(ActiviterExercice $activiterExercice): static
+    {
+        if (!$this->activiterExercices->contains($activiterExercice)) {
+            $this->activiterExercices->add($activiterExercice);
+            $activiterExercice->setActiviterId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiviterExercice(ActiviterExercice $activiterExercice): static
+    {
+        if ($this->activiterExercices->removeElement($activiterExercice)) {
+            // set the owning side to null (unless already changed)
+            if ($activiterExercice->getActiviterId() === $this) {
+                $activiterExercice->setActiviterId(null);
+            }
+        }
 
         return $this;
     }

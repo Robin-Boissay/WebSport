@@ -20,9 +20,10 @@ class DataActiviter
     #[ORM\JoinColumn(nullable: false)]
     private ?ProprieterTypeActiviter $ProprieterActiviter = null;
 
-    #[ORM\ManyToOne(inversedBy: 'donnees', cascade: ['remove'])]
+    #[ORM\ManyToOne(inversedBy: 'dataActiviters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Activiter $activiter = null;
+    private ?ActiviterExercice $activiterExercice = null;
+
 
     public function __toString(): string
     {
@@ -62,14 +63,14 @@ class DataActiviter
         return $this;
     }
 
-    public function getActiviter(): ?Activiter
+    public function getActiviterExercice(): ?ActiviterExercice
     {
-        return $this->activiter;
+        return $this->activiterExercice;
     }
 
-    public function setActiviter(?Activiter $activiter): static
+    public function setActiviterExercice(?ActiviterExercice $activiterExercice): static
     {
-        $this->activiter = $activiter;
+        $this->activiterExercice = $activiterExercice;
 
         return $this;
     }

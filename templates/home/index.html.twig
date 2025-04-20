@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Accueil - Activités{% endblock %}
-
+{% block head %}
+    <meta name="turbo-visit-control" content="reload">
+{% endblock %}
 {# Optionnel : Lie un fichier CSS spécifique si tu préfères ne pas tout mettre dans base.html.twig #}
 {% block stylesheets %}
-    {{ parent() }} {# Garde les styles de base #}
     {# Décommente si tu crées un fichier CSS séparé public/css/activity-cards.css #}
     {# <link rel="stylesheet" href="{{ asset('css/activity-cards.css') }}"> #}
 {% endblock %}
@@ -22,37 +23,25 @@
                 {# En-tête de la carte #}
                 <div class="card-header">
                     {# Utilisation de null-coalescing operator pour éviter erreur si User est null #}
-                    <h2>Activité de {{ activiter.User.username ?? 'Utilisateur inconnu' }}</h2>
+                    <h2> {{activiter.nomActiviter }}</h2>
                     {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
+                    
                     <p class="activity-type">{{ activiter.typeActiviter.nomType ?? 'Type inconnu' }}</p>
+                    <p class="activity-type">{{ activiter.User.username }}</p>
                     <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
                 </div>
-
+                
                 {# Corps de la carte - Contenu principal #}
                 <div class="card-body">
-                    {% if activiter.donnees is not empty %}
-                        {# Rendre le tableau responsive en le mettant dans un div #}
-                        <div class="table-responsive-wrapper">
-                            <table class="table data-table">
-                                <thead> {# Utilise thead pour la sémantique et le style #}
-                                    <tr>
-                                        <th>Type de Donnée</th>
-                                        <th>Valeur</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for donnee in activiter.donnees %}
-                                        <tr>
-                                            {# Utilisation de null-coalescing operator #}
-                                            <td>{{ donnee.ProprieterActiviter.nomProprieter ?? 'Propriété inconnue' }}</td>
-                                            <td><strong>{{ donnee.valeur ?? 'N/A' }}</strong></td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <p class="text-muted no-data-message">Aucune donnée enregistrée.</p>
+                    {% if activiter.activiterExercices is not empty %}
+                        {% for exercice in activiter.activiterExercices %}
+                        <h3>
+                            {{exercice.typeActiviter}}
+                        </h3>
+                            {% for donnee in exercice.dataActiviters %}
+                                <p> {{ donnee}}</p> 
+                            {% endfor %}
+                        {% endfor %}
                     {% endif %}
                 </div> {# Fin card-body #}
 
