@@ -31,7 +31,7 @@ class DataActiviter
             return  $this->valeur  . ' minutes' ;
 
         }
-        return  $this->valeur  . ' '. $this->ProprieterActiviter ;
+        return  $this->valeur  . ' '. $this->ProprieterActiviter->getUnit() ;
     }
 
     public function getId(): ?int

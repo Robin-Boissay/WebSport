@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\TypeActiviter;
 use App\Entity\ProprieterTypeActiviter;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\ProprieterTypeActiviterType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ProprieterTypeActiviterController extends AbstractController
@@ -58,4 +60,6 @@ final class ProprieterTypeActiviterController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    
 }

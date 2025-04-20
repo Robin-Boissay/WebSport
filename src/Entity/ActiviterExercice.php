@@ -23,10 +23,13 @@ class ActiviterExercice
     #[ORM\JoinColumn(nullable: false)]
     private ?TypeActiviter $type_activiter = null;
 
-    /**
-     * @var Collection<int, DataActiviter>
-     */
-    #[ORM\OneToMany(targetEntity: DataActiviter::class, mappedBy: 'activiterExercice', orphanRemoval: true)]
+    #[ORM\OneToMany(
+        mappedBy: 'activiterExercice', // Nom probable de la propriété inverse dans ValeurProprieter
+        targetEntity: DataActiviter::class, // Adapte le nom de la classe si différent
+        // Ajoute ces lignes :
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
     private Collection $dataActiviters;
 
     public function __construct()

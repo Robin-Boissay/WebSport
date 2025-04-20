@@ -32,7 +32,13 @@ class Activiter
     /**
      * @var Collection<int, ActiviterExercice>
      */
-    #[ORM\OneToMany(targetEntity: ActiviterExercice::class, mappedBy: 'activiterId', orphanRemoval: true)]
+     #[ORM\OneToMany(
+        mappedBy: 'activiterId', // ou le nom correct de la propriété inverse
+        targetEntity: ActiviterExercice::class,
+        // Ajoute cette ligne :
+        cascade: ['persist'],
+        orphanRemoval: true // Garde la valeur par défaut ou ajoute orphanRemoval si besoin (voir ci-dessous)
+    )]
     private Collection $activiterExercices;
 
     public function __construct()

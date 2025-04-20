@@ -15,37 +15,37 @@
         <div class="wrapperActiviter">
 
 
-        {% for activiter in activiters %}
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-primary">🏆 {{ activiter.nomActiviter }}</h3>
-                    <h5 class="text-secondary">🔹 Type : {{ activiter.typeActiviter }}</h5>
-
-                    {% if activiter.donnees is not empty %}
-                        <table class="table mt-3">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>Type de Donnée</th>
-                                <th>Valeur</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for donnee in activiter.donnees %}
-                                <tr>
-                                    <td>{{ donnee.ProprieterActiviter }}</td>
-                                    <td><strong>{{ donnee.valeur }}</strong></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <p class="text-muted">Aucune donnée enregistrée.</p>
-                    {% endif %}
+         {% for activiter in activiters %}
+            {# La carte individuelle #}
+            <div class="activiter-card">
+                {# En-tête de la carte #}
+                <div class="card-header">
+                    {# Utilisation de null-coalescing operator pour éviter erreur si User est null #}
+                    <h2> {{activiter.nomActiviter }}</h2>
+                    {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
+                    
+                    <p class="activity-type">{{ activiter.User.username }}</p>
+                    <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
                 </div>
-            </div>
+                
+                {# Corps de la carte - Contenu principal #}
+                <div class="card-body">
+                    {% if activiter.activiterExercices is not empty %}
+                        {% for exercice in activiter.activiterExercices %}
+                        <h3>
+                            {{exercice.typeActiviter}}
+                        </h3>
+                            {% for donnee in exercice.dataActiviters %}
+                                <p> {{ donnee}}</p> 
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div> {# Fin card-body #}
+
+            </div> {# Fin activiter-card #}
         {% else %}
-            <p class="text-center text-danger">Aucune activité enregistrée.</p>
+            {# Message si aucune activité n'est trouvée #}
+            <p class="no-activities">Aucune activité à afficher pour le moment.</p>
         {% endfor %}
-        </div>
     </div>
 {% endblock %}

@@ -1,0 +1,67 @@
+{# templates/form/custom_activiter_theme.html.twig #}
+
+{# Bloc pour rendre UNE SEULE entrée de la collection 'exercices' #}
+{% block _activiter_activiterExercices_entry_widget %}
+    {# --- Item: Un Exercice --- #}
+    {#
+       - Chaque 'li' est une cible 'item' pour le contrôleur 'collection-type' parent.
+       - Chaque 'li' porte AUSSI le contrôleur 'dynamic-properties' pour gérer ses propriétés.
+    #}
+    <li class="exercice-item mb-3 p-3 border rounded bg-light"
+        data-controller="dynamic-properties"
+        data-collection-type-target="item" {# Cible pour le collection-type parent #}
+        {{ stimulus_controller('dynamic-properties', {
+            apiUrlTemplate: path('api_type_activiter_proprietes', {id: 'PLACEHOLDER_ID'}), 
+            proprieteFieldName: 'proprieterActiviter' 
+        }) }}
+        >
+
+        {# Champ Type Activité/Exercice #}
+        <div class="mb-3">
+            {# Utilise la variable 'form' ici au lieu de 'exerciceForm' #}
+            {{ form_row(form.typeActiviter, {
+                label: 'Type Activité/Exercice',
+                attr: {
+                    'data-action': 'change->dynamic-properties#typeChanged', 
+                    'data-dynamic-properties-target': 'typeSelect'
+                }
+            }) }}
+        </div>
+
+        <fieldset class="border p-3"
+                  {# Utilise la variable 'form' ici pour générer le nom du contrôleur unique si besoin, ou garde fixe #}
+                  {{ stimulus_controller('collection-type') }} {# Contrôleur pour cette sous-collection #}
+                  >
+        
+            <legend class="w-auto px-2">{{ form_label(form.dataActiviters) }}</legend>
+
+            <ul class="dataActiviters-collection list-unstyled mb-0"
+                data-collection-type-target="collectionHolder" {# Cible pour le collection-type imbriqué #}
+                data-dynamic-properties-target="dataActivitersCollectionHolder" {# Cible pour dynamic-properties #}
+                >
+                {# Le prototype n'a pas d'enfants au début, donc pas de boucle ici #}
+            </ul>
+
+            {# Prototype pour AJOUTER une valeur/propriété (caché par défaut) #}
+            <div class="d-none" {# Caché visuellement #}
+                 data-collection-type-target="prototype" {# Cible pour le collection-type imbriqué #}
+                 data-dynamic-properties-target="dataActivitersPrototype" {# Cible pour dynamic-properties #}
+                 {# Utilise la variable 'form' ici #}
+                 data-prototype="{{ form_widget(form.dataActiviters.vars.prototype)|e('html_attr') }}">
+                 {# Le contenu est généré par form_widget #}
+            </div>
+
+            {# Bouton pour ajouter MANUELLEMENT une propriété (géré par collection-type imbriqué) #}
+            
+        </fieldset>
+
+        {# Bouton pour supprimer CET exercice (géré par le collection-type parent) #}
+        <div class="text-end mt-2">
+             <button type="button" class="btn btn-remove"
+                     data-action="click->collection-type#remove">
+                 Supprimer cet exercice
+             </button>
+        </div>
+    </li>
+    {# --- Fin Item: Un Exercice --- #}
+{% endblock %}

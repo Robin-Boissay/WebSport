@@ -35,7 +35,6 @@ class TypeActiviter
     public function __construct()
     {
         $this->proprieter = new ArrayCollection();
-        $this->proprieterTypeActiviters = new ArrayCollection();
         $this->activiterExercices = new ArrayCollection();
     }
     public function __toString()
@@ -79,33 +78,6 @@ class TypeActiviter
     public function removeProprieter(ProprieterTypeActiviter $proprieter): static
     {
         $this->proprieter->removeElement($proprieter);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ProprieterTypeActiviter>
-     */
-    public function getProprieterTypeActiviters(): Collection
-    {
-        return $this->proprieterTypeActiviters;
-    }
-
-    public function addProprieterTypeActiviter(ProprieterTypeActiviter $proprieterTypeActiviter): static
-    {
-        if (!$this->proprieterTypeActiviters->contains($proprieterTypeActiviter)) {
-            $this->proprieterTypeActiviters->add($proprieterTypeActiviter);
-            $proprieterTypeActiviter->addTypeActiviter($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProprieterTypeActiviter(ProprieterTypeActiviter $proprieterTypeActiviter): static
-    {
-        if ($this->proprieterTypeActiviters->removeElement($proprieterTypeActiviter)) {
-            $proprieterTypeActiviter->removeTypeActiviter($this);
-        }
 
         return $this;
     }

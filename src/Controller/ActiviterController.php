@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\Activiter;
-use App\Entity\TypeActiviter;
 use App\Entity\User;
+use App\Entity\Activiter;
 use App\Form\ActiviterType;
 use App\Form\ActiviterType2;
+use App\Entity\TypeActiviter;
 use App\Repository\ActiviterRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ActiviterController extends AbstractController
 {
@@ -39,23 +41,38 @@ final class ActiviterController extends AbstractController
 
 
     #[Route('/activiter/create', name: 'app_activiter_create')]
-    public function createActiviter( Request $request, EntityManagerInterface $em): Response
+    public function createActiviter( Request $request, EntityManagerInterface $em, #[CurrentUser] ?User $user): Response
     {
 
-        $form = $this->createForm(ActiviterType2::class, new Activiter());
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $activiter = $form->getData();
-            $activiter->setCreatedAt(new \DateTimeImmutable());
-            $activiter->setUser($this->getUser());
-            $em->persist($activiter);
-            $em->flush();
-            return $this->redirectToRoute('app_activiter_create_final', ['activiter' => $activiter->getId()]);
-        }
+        if (!$user) {
+            $this->addFlash('warning', 'Vous devez être connecté pour créer une activité.');
+            return $this->redirectToRoute('app_login'); // Redirige vers la page de connexion
+       }
 
-        return $this->render('activiter/pre_create.html.twig', [
-            "form" => $form->createView(),
-        ]);
+       $activiter = new Activiter();
+       // Associer l'utilisateur connecté
+       $activiter->setUser($user);
+       // Tu peux pré-remplir created_at ici si tu ne le fais pas ailleurs
+       // $activiter->setCreatedAt(new \DateTimeImmutable());
+
+       $form = $this->createForm(ActiviterType::class, $activiter);
+       $form->handleRequest($request);
+
+       if ($form->isSubmitted() && $form->isValid()) {
+            $activiter->setCreatedAt(new \DateTimeImmutable());
+           $em->persist($activiter);
+           $em->flush();
+
+           $this->addFlash('success', 'Activité enregistrée avec succès !');
+
+           // Redirige vers la page de l'activité créée ou la liste
+           return $this->redirectToRoute('app_home');
+       }
+
+       return $this->render('activiter/create.html.twig', [
+           'activiter' => $activiter,
+           'form' => $form->createView(), // Utilise createView() pour le template
+       ]);
     }
 
     #[Route('/activiter/create/{activiter}', name: 'app_activiter_create_final')]
@@ -64,5 +81,29 @@ final class ActiviterController extends AbstractController
         return $this->render('activiter/create.html.twig', [
             'activiter' => $activiter,
         ]);
+    }
+
+
+    #[Route('/api/type-activiter/{id}/proprietes', name: 'api_type_activiter_proprietes', methods: ['GET'])]
+    public function getProprietes(TypeActiviter $typeActiviter): JsonResponse
+    {
+        $proprietesData = [];
+
+        // Supposons une relation $typeActiviter->getProprieterActiviters()
+        // qui retourne une collection d'objets ProprieterActiviter
+        // Adapte ceci selon le nom exact de ta relation !
+        foreach ($typeActiviter->getProprieter() as $propriete) {
+            $proprietesData[] = [
+                'id' => $propriete->getId(),
+                'nom' => $propriete->getNomProprieter(), // Adapte si le nom est différent
+                'unit' => $propriete->getUnit(),
+                // Ajoute d'autres infos si nécessaire (unit, data_type...)
+            ];
+        }
+
+        // Si tu n'as pas de relation directe, tu devras injecter l'EntityManager
+        // et faire une requête DQL ou QueryBuilder sur ta table pivot.
+
+        return $this->json($proprietesData);
     }
 }

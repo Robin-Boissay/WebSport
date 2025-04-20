@@ -1,0 +1,162 @@
+/* ========================================= */
+/*          Styles pour home.html.twig       */
+/*          (Sans Bootstrap)                 */
+/* ========================================= */
+
+/* --- Réinitialisation et Base --- */
+
+/* Conteneur optionnel pour centrer le contenu */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto; /* Centrage */
+    padding: 20px 15px; /* Espacement intérieur */
+}
+
+/* --- Boutons d'action (Recrée un style similaire à .btn) --- */
+.button-link, /* Classe à ajouter à ton lien 'Créer une activité' */
+button[data-controller="modal-trigger"] { /* Style pour le bouton modal */
+    display: inline-block;
+    padding: 10px 18px;
+    margin: 0 10px 25px 0; /* Marge en bas pour espacer de la grille */
+    background-color: #1877f2; /* Bleu type Facebook */
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    text-align: center;
+    vertical-align: middle; /* Aide à l'alignement si plusieurs boutons */
+}
+
+.button-link:hover,
+button[data-controller="modal-trigger"]:hover {
+    background-color: #166fe5; /* Bleu légèrement plus foncé au survol */
+}
+
+/* --- Grille de Cartes --- */
+.card-grid-container {
+    display: grid;
+    gap: 20px; /* Espace entre les cartes */
+    /* Mobile first: 1 colonne par défaut */
+    grid-template-columns: 1fr;
+    padding: 1em;
+}
+
+/* --- Carte Individuelle --- */
+.activiter-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.467); /* Ombre légère */
+    overflow: hidden; /* Assure que le contenu respecte les coins arrondis */
+    display: flex;
+    flex-direction: column; /* Empile verticalement header et body */
+}
+.activiter-card:hover{
+    transform: scale(1.02);
+    transition: 0.2s transform ease;
+}
+
+/* --- En-tête de Carte --- */
+.card-header {
+    padding: 6px 8px;
+    border-bottom: 1px solid #dddfe2;
+    /* Optionnel: léger fond pour l'en-tête */
+    background-color: #cbf1ff;
+}
+
+.card-header h2 {
+    margin: 0 0 4px 0; /* Espacement minimal */
+    font-size: 1.15rem; /* Taille du titre de l'activité */
+    font-weight: 600; /* Semi-gras */
+    color: #050505;
+}
+
+.card-header .activity-type, /* Nom de l'utilisateur ici */
+.card-header p { /* Date */
+    margin: 0 0 4px 0;
+    font-size: 0.85rem; /* Plus petit */
+    color: #65676b; /* Gris pour les métadonnées */
+}
+
+.card-header .activity-type {
+    font-weight: 500; /* Un peu plus de poids pour le nom d'utilisateur */
+}
+
+/* --- Corps de Carte --- */
+.card-body {
+    padding: 3px 4px;
+    flex-grow: 1; /* Permet au corps de prendre l'espace vertical restant */
+}
+
+.card-body h3 { /* Type d'exercice */
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1c1e21;
+    border-bottom: 1px dashed #e4e6eb; /* Séparateur léger */
+    font-weight: bold;
+}
+.card-body h3:first-child {
+    margin-top: 0; /* Pas de marge supérieure pour le premier exercice */
+}
+
+.card-body p { /* Donnée d'exercice */
+    margin: 2px 0 2px 4px; /* Légère indentation */
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* Amélioration pour l'affichage de la donnée brute (IMPORTANT) */
+/* Si {{ donnee }} affiche juste "Propriété: Valeur", ce style est simple */
+.card-body p .data-label { /* Ex: <span class="data-label">Distance:</span> */
+    font-weight: 500;
+    color: #444;
+    margin-right: 6px;
+}
+.card-body p .data-value { /* Ex: <span class="data-value">10 km</span> */
+    /* Styles spécifiques si besoin */
+}
+
+
+/* --- Message si Aucune Activité --- */
+.no-activities {
+    grid-column: 1 / -1; /* Prend toute la largeur de la grille */
+    padding: 40px 20px;
+    text-align: center;
+    color: #65676b;
+    font-size: 1.1rem;
+    background-color: #ffffff;
+    border: 1px solid #dddfe2;
+    border-radius: 8px;
+}
+
+/* ========================================= */
+/*             Responsive Design             */
+/* ========================================= */
+
+/* --- Tablettes (ex: > 600px) --- */
+@media (min-width: 600px) {
+    .card-grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+        gap: 25px; /* Un peu plus d'espace */
+    }
+    .main-container {
+        padding: 30px 20px;
+    }
+}
+
+/* --- Petits Desktops (ex: > 900px) --- */
+@media (min-width: 900px) {
+    .card-grid-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 colonnes */
+    }
+}
+
+/* --- Grands Desktops (ex: > 1200px) --- */
+/* @media (min-width: 1200px) {
+    .card-grid-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 colonnes si souhaité * /
+    }
+} */
