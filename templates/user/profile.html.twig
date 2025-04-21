@@ -2,54 +2,61 @@
 
 {% block title %}Hello UserController!{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
+{% endblock %}
+
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 
-    <div class="container">
-        <h1 class="text-center my-4">📋 Liste des Activités</h1>
-        <div class="wrapperActiviter">
 
-    {% if activiters is defined %}
-        
-        
+    <a href="{{ path('app_activiter_create') }}" class="btn btn-add">Créer une activité</a>
+
+    <div class="card-grid-container">
+
         {% for activiter in activiters %}
-            <div class="card mb-4 shadow-sm">
-                <div class="card-body">
-                    <h3 class="card-title text-primary">🏆 {{ activiter.nomActiviter }}</h3>
-                    <h5 class="text-secondary">🔹 Type : {{ activiter.typeActiviter }}</h5>
-
-                    {% if activiter.donnees is not empty %}
-                        <table class="table mt-3">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>Type de Donnée</th>
-                                <th>Valeur</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for donnee in activiter.donnees %}
-                                <tr>
-                                    <td>{{ donnee.ProprieterActiviter }}</td>
-                                    <td><strong>{{ donnee.valeur }}</strong></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <p class="text-muted">Aucune donnée enregistrée.</p>
-                    {% endif %}
+            {# La carte individuelle #}
+            <div class="activiter-card">
+                {# En-tête de la carte #}
+                <div class="card-header">
+                    {# Utilisation de null-coalescing operator pour éviter erreur si User est null #}
+                    <h2> {{activiter.nomActiviter }}</h2>
+                    {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
+                    
+                    
+                    <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
                 </div>
-            </div>
+                
+                {# Corps de la carte - Contenu principal #}
+                <div class="card-body">
+                    {% if activiter.activiterExercices is not empty %}
+                        {% for exercice in activiter.activiterExercices %}
+                        <h3>
+                            {{exercice.typeActiviter}}
+                        </h3>
+                            {% for donnee in exercice.dataActiviters %}
+                                <p>
+                                    {# Accède au nom de la propriété via la relation #}
+                                    <span class="data-label">{{ donnee.proprieterActiviter.nomProprieter }}:</span>
+                                    {# Accède à la valeur enregistrée #}
+                                    <span class="data-value">{{ donnee.valeur }}</span>
+                                    {# Optionnel: ajoute l'unité si elle existe #}
+                                    {% if donnee.proprieterActiviter.unit %}
+                                        <span class="data-unit"> {{ donnee.proprieterActiviter.unit }}</span>
+                                    {% endif %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div> {# Fin card-body #}
+
+            </div> {# Fin activiter-card #}
         {% else %}
-            <p class="text-center text-danger">Aucune activité enregistrée.</p>
+            {# Message si aucune activité n'est trouvée #}
+            <p class="no-activities">Aucune activité à afficher pour le moment.</p>
         {% endfor %}
-    {% endif %}
-        </div>
-    </div>
+
+    </div> {# Fin card-grid-container #}
 
 
 {% endblock %}
