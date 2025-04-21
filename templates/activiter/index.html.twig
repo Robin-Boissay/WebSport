@@ -3,19 +3,15 @@
 {% block title %}Hello ActiviterController!{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('styles/activiter.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
 {% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_activiter_create') }}" class="btn btn-primary">Create</a>
+    <a href="{{ path('app_activiter_create') }}" class="btn btn-add">Créer une activité</a>
 
+    <div class="card-grid-container">
 
-    <div class="container">
-        <h1 class="text-center my-4">📋 Liste des Activités</h1>
-        <div class="wrapperActiviter">
-
-
-         {% for activiter in activiters %}
+        {% for activiter in activiters %}
             {# La carte individuelle #}
             <div class="activiter-card">
                 {# En-tête de la carte #}
@@ -24,7 +20,7 @@
                     <h2> {{activiter.nomActiviter }}</h2>
                     {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
                     
-                    <p class="activity-type">{{ activiter.User.username }}</p>
+                    
                     <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
                 </div>
                 
@@ -36,7 +32,16 @@
                             {{exercice.typeActiviter}}
                         </h3>
                             {% for donnee in exercice.dataActiviters %}
-                                <p> {{ donnee}}</p> 
+                                <p>
+                                    {# Accède au nom de la propriété via la relation #}
+                                    <span class="data-label">{{ donnee.proprieterActiviter.nomProprieter }}:</span>
+                                    {# Accède à la valeur enregistrée #}
+                                    <span class="data-value">{{ donnee.valeur }}</span>
+                                    {# Optionnel: ajoute l'unité si elle existe #}
+                                    {% if donnee.proprieterActiviter.unit %}
+                                        <span class="data-unit"> {{ donnee.proprieterActiviter.unit }}</span>
+                                    {% endif %}
+                                </p>
                             {% endfor %}
                         {% endfor %}
                     {% endif %}
@@ -47,5 +52,6 @@
             {# Message si aucune activité n'est trouvée #}
             <p class="no-activities">Aucune activité à afficher pour le moment.</p>
         {% endfor %}
-    </div>
+
+    </div> {# Fin card-grid-container #}
 {% endblock %}
