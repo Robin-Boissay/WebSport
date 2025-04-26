@@ -160,3 +160,96 @@ button[data-controller="modal-trigger"]:hover {
         grid-template-columns: repeat(4, 1fr); /* 4 colonnes si souhaité * /
     }
 } */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.event-container {
+    display: flex;
+    flex-direction: column;
+    gap: .4em;
+    padding: .5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.event-info {
+    background-color: #f9f9f9;
+    padding: .4rem .8rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-info p,
+.event-info li {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.event-ranking {
+    background-color: #f1f1f1;
+    padding: .4rem .8rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.event-ranking table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.event-ranking th, .event-ranking td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.event-ranking th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .event-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .event-info, .event-ranking {
+        flex: 1;
+    }
+}

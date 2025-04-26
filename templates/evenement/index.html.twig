@@ -1,0 +1,39 @@
+{% block body %}
+    <div class="event-container">
+        <div class="event-info">
+            <p><strong>Date de début :</strong> {{ event.dateDebut|date('l j F Y H:i') }}</p>
+            <p><strong>Date de fin :</strong> {{ event.dateFin|date('l j F Y H:i') }}</p>
+            <p><strong>Description :</strong> {{ event.description }}</p>
+
+            <h3>Types d'activités pris en compte :</h3>
+            <ul>
+                {% for typeActiviter in event.activiterType %}
+                    <li>{{ typeActiviter }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Valeur comptabilisée :</h3>
+            <p>{{ event.unit }}</p>
+        </div>
+
+        <div class="event-ranking">
+            <h2>Classement</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in eventData %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.total }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

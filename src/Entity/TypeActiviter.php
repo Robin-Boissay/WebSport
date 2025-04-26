@@ -30,12 +30,19 @@ class TypeActiviter
     #[ORM\OneToMany(targetEntity: ActiviterExercice::class, mappedBy: 'type_activiter', orphanRemoval: true)]
     private Collection $activiterExercices;
 
+    /**
+     * @var Collection<int, Evenement>
+     */
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'activiterType')]
+    private Collection $evenements;
+
 
 
     public function __construct()
     {
         $this->proprieter = new ArrayCollection();
         $this->activiterExercices = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
     }
     public function __toString()
     {
@@ -107,6 +114,33 @@ class TypeActiviter
             if ($activiterExercice->getTypeActiviter() === $this) {
                 $activiterExercice->setTypeActiviter(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addActiviterType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeActiviterType($this);
         }
 
         return $this;
