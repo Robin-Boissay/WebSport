@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Evenement;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,19 @@ class EvenementRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Evenement::class);
     }
+
+    public function findActualsEvent(): array
+    {
+        $now = new DateTimeImmutable();
+
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.dateDebut <:currentDate AND e.dateFin > :currentDate')
+            ->setParameter('currentDate', $now)
+            ->orderBy('e.dateDebut', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     //    /**
     //     * @return Evenement[] Returns an array of Evenement objects

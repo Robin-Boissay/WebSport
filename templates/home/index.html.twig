@@ -21,6 +21,7 @@
     <a href="{{ path('app_activiter_create') }}" class="btn btn-add">Créer une activité</a>
 
     {{ render(controller('App\\Controller\\EvenementController::index')) }}
+    
     <div class="card-grid-container">
 
         {% for activiter in activiters %}

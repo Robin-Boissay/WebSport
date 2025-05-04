@@ -14,10 +14,14 @@ final class EvenementController extends AbstractController
     #[Route('/evenement', name: 'app_evenement')]
     public function index(EvenementRepository $evenementRepository, ActiviterRepository $activiterRepository): Response
     {
-        $evenement = $evenementRepository->find(1);
-        $data = $activiterRepository->getUserProgressForEvent($evenement->getActiviterType(),$evenement->getUnit(),$evenement->getDateDebut(),$evenement->getDateFin());
+
+        $evenement = $evenementRepository->findActualsEvent();
+        $data = [];
+        foreach($evenement as $event){
+            $data[] = $activiterRepository->getUserProgressForEvent($event->getActiviterType(),$event->getUnit(),$event->getDateDebut(),$event->getDateFin());
+        }
         return $this->render('evenement/index.html.twig', [
-            'event' => $evenement,
+            'events' => $evenement,
             'eventData' => $data,
         ]);
     }
