@@ -1,0 +1,28 @@
+/* Exemple : assets/styles/app.css ou un fichier importé */
+.activity-stats-table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+.activity-stats-table th,
+.activity-stats-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.activity-stats-table th {
+    background-color: #f2f2f2;
+}
+
+.activity-stats-table .stats-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.activity-stats-table .stats-list li {
+    padding: 2px 0;
+}

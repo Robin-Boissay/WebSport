@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Friend;
+use App\Entity\ProprieterTypeActiviter;
+use App\Entity\TypeActiviter;
 use App\Entity\User;
+use App\Repository\ActiviterRepository;
 use App\Repository\FriendRepository;
+use App\Repository\ProprieterTypeActiviterRepository;
+use App\Repository\TypeActiviterRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,6 +37,33 @@ final class UserController extends AbstractController
         return $this->render('user/profile.html.twig', [
             'user' => $user,
             'activiters' => $activiters,
+        ]);
+    }
+    #[Route('/profile/{id}/showStat', name: 'app_profile_show_stats')]
+    public function profileShowStats(User $user, ActiviterRepository $activiterRepository, TypeActiviterRepository $typeActiviter, ProprieterTypeActiviterRepository $proprieterTypeActiviterRepository): Response
+    {  
+
+        $flatStats = $activiterRepository->getAllUserStatsGrouped($user);
+        $aggregatedData = [];
+        foreach ($flatStats as $item) {
+            $typeActiviterName = $item['typeActiviter'];
+            $unite = $item['unite'];
+            $total = $item['total'];
+        
+            if (!isset($aggregatedData[$typeActiviterName])) {
+                $aggregatedData[$typeActiviterName] = [
+                    'user_id' => $item['user_id'],
+                    'username' => $item['username'],
+                    'typeActiviter' => $typeActiviterName,
+                    'stats' => []
+                ];
+            }
+            $aggregatedData[$typeActiviterName]['stats'][$unite] = $total;
+        }
+
+        return $this->render('user/show_stats.html.twig', [
+            'username' => $user->getUsername(),
+            'activitiesData' => $aggregatedData
         ]);
     }
 

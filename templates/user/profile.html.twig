@@ -4,12 +4,15 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('styles/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/profile.css') }}">
+
 {% endblock %}
 
 {% block body %}
 
- 
-    <a href="{{ path('app_activiter_create') }}" class="btn btn-add">Créer une activité</a>
+     {{ render(controller('App\\Controller\\UserController::profileShowStats', {
+                        'id': user.id,
+    })) }}  
 
     <div class="card-grid-container">
 
