@@ -1,0 +1,44 @@
+{% block body %}
+    {% if events|length > 0 %}
+
+        {% for i in range(0, (events|length -1 )) %}
+            <div class="event-container">
+                <div class="event-info">
+                    <p><strong>Date de début :</strong> {{ events[i].dateDebut|date('l j F Y H:i') }}</p>
+                    <p><strong>Date de fin :</strong> {{ events[i].dateFin|date('l j F Y H:i') }}</p>
+                    <p><strong>Description :</strong> {{ events[i].description }}</p>
+
+                    <h3>Types d'activités pris en compte :</h3>
+                    <ul>
+                        {% for typeActiviter in events[i].activiterType %}
+                            <li>{{ typeActiviter }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h3>Valeur comptabilisée :</h3>
+                    <p>{{ events[i].unit }}</p>
+                </div>
+
+                <div class="event-ranking">
+                    <h2>Classement</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Utilisateur</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in eventData[i] %}
+                                <tr>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.total }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

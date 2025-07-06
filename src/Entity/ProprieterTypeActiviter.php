@@ -24,11 +24,16 @@ class ProprieterTypeActiviter
     #[ORM\ManyToMany(targetEntity: TypeActiviter::class, mappedBy: 'proprieter')]
     private Collection $typeActiviters;
 
+    #[ORM\Column(length: 255)]
+    private ?string $unit = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $data_type = null;
+
 
     public function __construct()
     {
         $this->typeActiviters = new ArrayCollection();
-        $this->TypeActiviter = new ArrayCollection();
     }
     public function __toString()
     {
@@ -78,11 +83,27 @@ class ProprieterTypeActiviter
         return $this;
     }
 
-    /**
-     * @return Collection<int, TypeActiviter>
-     */
-    public function getTypeActiviter(): Collection
+    public function getUnit(): ?string
     {
-        return $this->TypeActiviter;
+        return $this->unit;
+    }
+
+    public function setUnit(string $unit): static
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getDataType(): ?string
+    {
+        return $this->data_type;
+    }
+
+    public function setDataType(string $data_type): static
+    {
+        $this->data_type = $data_type;
+
+        return $this;
     }
 }

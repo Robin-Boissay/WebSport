@@ -1,0 +1,21 @@
+.btn{
+    padding: .3em .4em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn:hover{
+    opacity: 0.8;
+}
+
+
+.btn-add{
+    background-color: rgb(17 182 241);
+    color: #ffffff;
+}
+
+.btn-remove{
+    background-color: rgb(219, 20, 20);
+    color: #ffffff;
+
+}

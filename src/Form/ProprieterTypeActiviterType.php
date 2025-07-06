@@ -17,8 +17,9 @@ class ProprieterTypeActiviterType extends AbstractType
             ->add('nomProprieter')
             ->add('typeActiviters', EntityType::class, [
                 'class' => TypeActiviter::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nomType',
                 'multiple' => true,
+                'expanded' => true,
             ])
         ;
     }

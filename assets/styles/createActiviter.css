@@ -1,0 +1,174 @@
+/* -------------------------------------------------- */
+/* Général Form Styling (assuming Bootstrap context)  */
+/* -------------------------------------------------- */
+
+/* Optionnel: Contenir le formulaire et le centrer sur de grands écrans */
+.activiter-form-container {
+    max-width: 900px; /* Ajuste selon tes préférences */
+    margin: 2rem auto; /* Centrage horizontal */
+    padding: 1.5rem 2rem;
+    background-color: #f8f9fa; /* Fond légèrement gris */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.activiter-form-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+/* Espacement général des groupes de formulaires */
+.form-group, /* Classe générique si tu l'utilises */
+.activiter-form-container .mb-3 { /* Cible mb-3 dans ce conteneur */
+    margin-bottom: 1.5rem; /* Un peu plus d'espace */
+}
+
+/* Style des labels */
+.activiter-form-container label {
+    font-weight: 500; /* Un peu plus de poids */
+    margin-bottom: 0.5rem;
+    color: #495057;
+}
+
+/* --------------------------------------- */
+/* Exercices Collection Styling           */
+/* --------------------------------------- */
+
+/* Fieldset pour les exercices */
+.exercices-fieldset {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 1.5rem;
+    margin-top: 2rem; /* Espace avant le fieldset */
+    background-color: #fff; /* Fond blanc pour contraster */
+}
+
+.exercices-fieldset legend {
+    font-size: 1.3em;
+    font-weight: 600;
+    padding: 0 0.5rem; /* Empêche la bordure de couper le texte */
+    width: auto; /* Nécessaire pour le padding */
+    margin-bottom: 1.5rem;
+    border-bottom: none; /* Enlève la bordure par défaut si présente */
+    color: #212529;
+}
+
+/* Liste des exercices (ul) */
+.exercices-collection {
+    list-style: none;
+    padding-left: 0; /* Enlève le padding par défaut de l'UL */
+}
+
+/* Chaque item d'exercice (li ou div) */
+.exercice-item {
+    border: 1px solid #e9ecef;
+    background-color: #fdfdff; /* Très léger fond */
+    border-radius: 4px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    position: relative; /* Pour positionner le bouton supprimer */
+}
+
+/* Conteneur pour les propriétés dynamiques */
+.specific-data-fields-container {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #ced4da;
+}
+.specific-data-fields-container:empty {
+    display: none; /* Cache le conteneur (et sa bordure) s'il est vide */
+}
+
+/* Chaque paire Propriété/Valeur dynamique */
+.data-property-pair { /* Ajoute cette classe aux divs contenant label+input/select */
+    display: flex;
+    flex-direction: column; /* Empilé par défaut (mobile-first) */
+    gap: 0.5rem; /* Espace entre label et input */
+    margin-bottom: 1rem;
+}
+
+/* Style pour le bouton supprimer exercice */
+.delete-exercice {
+    display: block;
+    margin-top: 1rem;
+    margin-left: auto; /* Pousse le bouton vers la droite */
+    /* Alternative: Positionnement absolu */
+    /* position: absolute; */
+    /* top: 0.75rem; */
+    /* right: 0.75rem; */
+    /* padding: 0.25rem 0.5rem; */
+    /* font-size: 0.8em; */
+}
+
+
+/* --------------------------------------- */
+/* Boutons d'action principaux            */
+/* --------------------------------------- */
+.form-actions {
+    display: flex;
+    flex-direction: column; /* Empilé par défaut */
+    gap: 1rem; /* Espace entre les boutons */
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.form-actions .add-exercice {
+    /* Style spécifique si besoin */
+}
+
+.form-actions .btn-primary { /* Bouton Enregistrer */
+   /* Style spécifique si besoin */
+   padding: 0.75rem 1.5rem;
+   font-size: 1.1em;
+}
+
+/* --------------------------------------- */
+/* Responsive Design (Mobile First)      */
+/* --------------------------------------- */
+
+/* Pour les écrans moyens et plus grands (Tablettes, Desktops) */
+@media (min-width: 768px) {
+    /* Conteneur général */
+    .activiter-form-container {
+        padding: 2rem 3rem;
+    }
+
+    /* Met les paires Propriété/Valeur côte à côte */
+    .data-property-pair {
+        flex-direction: row; /* Côte à côte */
+        align-items: baseline; /* Aligne sur la base du texte */
+        gap: 1rem; /* Espace entre label et input */
+    }
+
+    .data-property-pair label {
+        flex: 0 0 120px; /* Base fixe pour le label, ne grandit pas, ne rétrécit pas */
+        text-align: right;
+        margin-bottom: 0; /* Enlève marge car aligné */
+        padding-right: 0.5rem; /* Espace avant l'input */
+    }
+
+    .data-property-pair .form-control,
+    .data-property-pair .form-select {
+        flex: 1 1 auto; /* Prend l'espace restant */
+    }
+
+    /* Met les boutons d'action principaux côte à côte */
+    .form-actions {
+        flex-direction: row; /* Côte à côte */
+        justify-content: space-between; /* Espace entre Ajouter et Enregistrer */
+        align-items: center;
+    }
+    .form-actions .btn-primary {
+        order: 1; /* Met le bouton enregistrer à droite (si besoin) */
+    }
+}
+
+/* Optionnel: Pour les très grands écrans */
+@media (min-width: 1200px) {
+    .activiter-form-container {
+        max-width: 1100px; /* Augmente la largeur max */
+    }
+}

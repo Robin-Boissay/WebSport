@@ -1,0 +1,200 @@
+/* ========================================= */
+/*        Styles pour friends-page.css       */
+/*          (Sans Bootstrap)                 */
+/* ========================================= */
+
+/* --- Conteneur Principal --- */
+.friends-management-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 1rem 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #f8f9fa; /* Fond général clair */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.friends-management-container h1 {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+/* --- Structure des Sections --- */
+.friends-section {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.friends-section h2 {
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #212529;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 500;
+}
+
+/* --- Listes d'utilisateurs --- */
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-item {
+    display: flex;
+    flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur petit écran */
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f3f5; /* Séparateur très léger */
+    gap: 10px; /* Espace entre username et boutons */
+}
+
+.user-item:last-child {
+    border-bottom: none;
+}
+
+.username {
+    font-weight: 500;
+    padding: .2em .4em;
+    color: #ffffff;
+    margin-right: 1rem; /* Espace avant les boutons */
+}
+
+.no-items {
+    color: #6c757d;
+    padding: 1rem 0;
+    text-align: center;
+    font-style: italic;
+}
+
+/* --- Actions (Boutons & Formulaires) --- */
+.user-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; /* Permet aux boutons de s'empiler si besoin */
+    gap: 0.5rem; /* Espace entre les boutons/formulaires */
+    flex-shrink: 0; /* Empêche les boutons de trop rétrécir */
+}
+
+/* Style de base des boutons (recrée un look simple) */
+.button {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    line-height: 1.5; /* Assure une bonne hauteur */
+}
+
+/* Style pour les formulaires inline */
+.action-form {
+    margin: 0;
+    padding: 0;
+    display: inline-block; /* Pour les mettre côte à côte avec d'autres actions */
+}
+
+/* Couleurs des boutons */
+.button-primary { /* Ajouter ami */
+    background-color: #0d6efd; /* Bleu (ajuste si besoin) */
+    color: white;
+    border-color: #0d6efd;
+}
+.button-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.button-success { /* Accepter */
+    background-color: #198754; /* Vert */
+    color: white;
+    border-color: #198754;
+}
+.button-success:hover {
+    background-color: #157347;
+    border-color: #146c43;
+}
+
+.button-danger { /* Refuser, Retirer */
+    background-color: #dc3545; /* Rouge */
+    color: white;
+    border-color: #dc3545;
+}
+.button-danger:hover {
+    background-color: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.button-secondary { /* Voir profil */
+    background-color: #6c757d; /* Gris */
+    color: white;
+    border-color: #6c757d;
+}
+.button-secondary:hover {
+    background-color: #5c636a;
+    border-color: #565e64;
+}
+
+
+/* ========================================= */
+/*             Responsive Design             */
+/* ========================================= */
+
+/* --- Ecrans plus petits (Améliorations pour mobile) --- */
+@media (max-width: 576px) {
+    .friends-management-container {
+        margin: 1rem auto;
+        padding: 0.5rem 1rem;
+    }
+    .friends-section {
+        padding: 1rem;
+    }
+    .friends-section h2 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    /* Empiler username et actions si nécessaire */
+    .user-item {
+       flex-direction: column;
+       align-items: flex-start; /* Aligne tout à gauche */
+       gap: 8px;
+    }
+    .user-actions {
+       width: 100%; /* Prend toute la largeur pour les boutons */
+       justify-content: flex-start; /* Commence les boutons à gauche */
+    }
+    .button {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Optionnel : Grille pour les sections sur écrans larges */
+@media (min-width: 992px) {
+    .friends-management-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Crée des colonnes flexibles */
+        gap: 1.5rem; /* Espace entre les colonnes de sections */
+        align-items: start; /* Aligne les sections en haut */
+    }
+    .friends-section {
+        margin-bottom: 0; /* Plus besoin de marge car géré par le gap */
+    }
+    .friends-management-container h1 {
+        grid-column: 1 / -1; /* Le titre prend toute la largeur */
+        text-align: left;
+    }
+}

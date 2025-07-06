@@ -6,6 +6,7 @@ use App\Repository\ActiviterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OrderBy;
 
 #[ORM\Entity(repositoryClass: ActiviterRepository::class)]
 class Activiter
@@ -20,21 +21,29 @@ class Activiter
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'activiters')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $User = null;
+    private ?User $user = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?TypeActiviter $typeActiviter = null;
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $startedAt = null;
 
     /**
-     * @var Collection<int, DataActiviter>
+     * @var Collection<int, ActiviterExercice>
      */
-    #[ORM\OneToMany(targetEntity: DataActiviter::class, mappedBy: 'activiter', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $donnees;
+     #[ORM\OneToMany(
+        mappedBy: 'activiterId', // ou le nom correct de la propriété inverse
+        targetEntity: ActiviterExercice::class,
+        // Ajoute cette ligne :
+        cascade: ['persist'],
+        orphanRemoval: true // Garde la valeur par défaut ou ajoute orphanRemoval si besoin (voir ci-dessous)
+    )]
+    private Collection $activiterExercices;
 
     public function __construct()
     {
-        $this->donnees = new ArrayCollection();
+        $this->activiterExercices = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -61,60 +70,64 @@ class Activiter
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
     public function setUser(?User $user): static
     {
-        $this->User = $user;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getTypeActiviter(): ?TypeActiviter
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->typeActiviter;
+        return $this->createdAt;
     }
 
-    public function setTypeActiviter(?TypeActiviter $typeActiviter): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->typeActiviter = $typeActiviter;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getStartedAt(): ?\DateTimeImmutable
+    {
+        return $this->startedAt;
+    }
+
+    public function setStartedAt(\DateTimeImmutable $startedAt): static
+    {
+        $this->startedAt = $startedAt;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, DataActiviter>
+     * @return Collection<int, ActiviterExercice>
      */
-    public function getDonnees(): Collection
+    public function getActiviterExercices(): Collection
     {
-        return $this->donnees;
+        return $this->activiterExercices;
     }
 
-    public function setDonnees(Collection $donnees): self
+    public function addActiviterExercice(ActiviterExercice $activiterExercice): static
     {
-        $this->donnees = $donnees;
-
-        return $this;
-    }
-
-
-    public function addDonnees(DataActiviter $donnee): self
-    {
-        if (!$this->donnees->contains($donnee)) {
-            $this->donnees->add($donnee);
-            $donnee->setActiviter($this);
+        if (!$this->activiterExercices->contains($activiterExercice)) {
+            $this->activiterExercices->add($activiterExercice);
+            $activiterExercice->setActiviterId($this);
         }
 
         return $this;
     }
 
-    public function removeDonnees(DataActiviter $donnee): static
+    public function removeActiviterExercice(ActiviterExercice $activiterExercice): static
     {
-        if ($this->donnees->removeElement($donnee)) {
+        if ($this->activiterExercices->removeElement($activiterExercice)) {
             // set the owning side to null (unless already changed)
-            if ($donnee->getActiviter() === $this) {
-                $donnee->setActiviter(null);
+            if ($activiterExercice->getActiviterId() === $this) {
+                $activiterExercice->setActiviterId(null);
             }
         }
 

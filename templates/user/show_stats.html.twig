@@ -1,0 +1,42 @@
+{% if username is defined and username %}
+    <h2>Pour l'utilisateur : {{ username }}</h2>
+{% endif %}
+
+{% if activitiesData is defined and activitiesData is not empty %}
+    <table class="activity-stats-table"> {# Ajoutez une classe pour un ciblage CSS facile #}
+        <thead>
+            <tr>
+                <th>Type d'Activité</th>
+                <th>Statistiques Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activitiesData %}
+                <tr>
+                    <td>{{ activity.typeActiviter }}</td>
+                    <td>
+                        {% if activity.stats is defined and activity.stats is not empty %}
+                            <ul class="stats-list">
+                                {% for unit, total in activity.stats %}
+                                    <li>
+                                        {{ unit|capitalize }}: {{ total }}
+                                    </li>
+                                {% else %}
+                                    <li>Aucune statistique pour cette unité.</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            Aucune statistique disponible pour cette activité.
+                        {% endif %}
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2">Aucune activité à afficher.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Aucune donnée de statistique disponible pour le moment.</p>
+{% endif %}

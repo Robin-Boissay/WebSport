@@ -14,16 +14,20 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            switch_user: {role: ROLE_ALLOWED_TO_SWITCH, parameter: _switch_user}
             lazy: true
             provider: app_user_provider
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                enable_csrf: true
             logout:
                 path: app_logout
+                target: app_login
                 # where to redirect after logout
                 # target: app_any_route
+            custom_authenticator: App\Security\AppAuthenticator
+            remember_me:
+                secret: '%kernel.secret%'  # important !
+                lifetime: 604800           # 1 semaine (en secondes)
+                path: /
+                always_remember_me: false
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

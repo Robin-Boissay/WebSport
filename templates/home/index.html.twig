@@ -1,20 +1,78 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil - Activités{% endblock %}
+{% block head %}
+    <meta name="turbo-visit-control" content="reload">
+{% endblock %}
+{# Optionnel : Lie un fichier CSS spécifique si tu préfères ne pas tout mettre dans base.html.twig #}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('styles/home.css') }}"> 
+{% endblock %}
+
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <!--<button type="btn"
+                data-controller="modal-trigger"
+                data-action="click->modal-trigger#trigger"
+                data-modal-trigger-url-value="{{ path('app_activiter') }}">
+                test modal
+            </button>-->
+    {# Ajout du conteneur pour la grille de cartes #}
+    <a href="{{ path('app_activiter_create') }}" class="btn btn-add">Créer une activité</a>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {{ render(controller('App\\Controller\\EvenementController::index')) }}
+    
+    <div class="card-grid-container">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/robin/PhpstormProjects/SportApp/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/robin/PhpstormProjects/SportApp/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+        {% for activiter in activiters %}
+            {# La carte individuelle #}
+            <div class="activiter-card">
+                {# En-tête de la carte #}
+                <div class="card-header">
+                    {# Utilisation de null-coalescing operator pour éviter erreur si User est null #}
+                    <h2> {{activiter.nomActiviter }}</h2>
+                    {# Utilisation de null-coalescing operator pour éviter erreur si typeActiviter est null #}
+                    
+                    <p class="activity-type"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 22a8 8 0 1 1 16 0h-2a6 6 0 0 0-12 0zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6s6 2.685 6 6s-2.685 6-6 6m0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4s-4 1.79-4 4s1.79 4 4 4"/></svg>
+                    {{ activiter.User.username }}</p>
+                    <p>Date : {{activiter.startedAt|date('l d F Y H:i', 'Europe/Paris')}} </p> 
+                </div>
+                
+                {# Corps de la carte - Contenu principal #}
+                <div class="card-body">
+                    {% if activiter.activiterExercices is not empty %}
+                        {% for exercice in activiter.activiterExercices %}
+                        <h3>
+                            {{exercice.typeActiviter}}
+                        </h3>
+                            {% for donnee in exercice.dataActiviters %}
+                                <p>
+                                    {# Accède au nom de la propriété via la relation #}
+                                    <span class="data-label">{{ donnee.proprieterActiviter.nomProprieter }}:</span>
+                                    {# Accède à la valeur enregistrée #}
+                                    <span class="data-value">{{ donnee.valeur }}</span>
+                                    {# Optionnel: ajoute l'unité si elle existe #}
+                                    {% if donnee.proprieterActiviter.unit %}
+                                        <span class="data-unit"> {{ donnee.proprieterActiviter.unit }}</span>
+                                    {% endif %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                </div> {# Fin card-body #}
+
+            </div> {# Fin activiter-card #}
+        {% else %}
+            {# Message si aucune activité n'est trouvée #}
+            <p class="no-activities">Aucune activité à afficher pour le moment.</p>
+        {% endfor %}
+
+    </div> {# Fin card-grid-container #}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {# Ajoute ici des JS spécifiques si nécessaire #}
 {% endblock %}

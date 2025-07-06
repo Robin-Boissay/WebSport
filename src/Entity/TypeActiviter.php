@@ -24,12 +24,25 @@ class TypeActiviter
     #[ORM\ManyToMany(targetEntity: ProprieterTypeActiviter::class, inversedBy: 'typeActiviters')]
     private Collection $proprieter;
 
+    /**
+     * @var Collection<int, ActiviterExercice>
+     */
+    #[ORM\OneToMany(targetEntity: ActiviterExercice::class, mappedBy: 'type_activiter', orphanRemoval: true)]
+    private Collection $activiterExercices;
+
+    /**
+     * @var Collection<int, Evenement>
+     */
+    #[ORM\ManyToMany(targetEntity: Evenement::class, mappedBy: 'activiterType')]
+    private Collection $evenements;
+
 
 
     public function __construct()
     {
         $this->proprieter = new ArrayCollection();
-        $this->proprieterTypeActiviters = new ArrayCollection();
+        $this->activiterExercices = new ArrayCollection();
+        $this->evenements = new ArrayCollection();
     }
     public function __toString()
     {
@@ -77,27 +90,57 @@ class TypeActiviter
     }
 
     /**
-     * @return Collection<int, ProprieterTypeActiviter>
+     * @return Collection<int, ActiviterExercice>
      */
-    public function getProprieterTypeActiviters(): Collection
+    public function getActiviterExercices(): Collection
     {
-        return $this->proprieterTypeActiviters;
+        return $this->activiterExercices;
     }
 
-    public function addProprieterTypeActiviter(ProprieterTypeActiviter $proprieterTypeActiviter): static
+    public function addActiviterExercice(ActiviterExercice $activiterExercice): static
     {
-        if (!$this->proprieterTypeActiviters->contains($proprieterTypeActiviter)) {
-            $this->proprieterTypeActiviters->add($proprieterTypeActiviter);
-            $proprieterTypeActiviter->addTypeActiviter($this);
+        if (!$this->activiterExercices->contains($activiterExercice)) {
+            $this->activiterExercices->add($activiterExercice);
+            $activiterExercice->setTypeActiviter($this);
         }
 
         return $this;
     }
 
-    public function removeProprieterTypeActiviter(ProprieterTypeActiviter $proprieterTypeActiviter): static
+    public function removeActiviterExercice(ActiviterExercice $activiterExercice): static
     {
-        if ($this->proprieterTypeActiviters->removeElement($proprieterTypeActiviter)) {
-            $proprieterTypeActiviter->removeTypeActiviter($this);
+        if ($this->activiterExercices->removeElement($activiterExercice)) {
+            // set the owning side to null (unless already changed)
+            if ($activiterExercice->getTypeActiviter() === $this) {
+                $activiterExercice->setTypeActiviter(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Evenement>
+     */
+    public function getEvenements(): Collection
+    {
+        return $this->evenements;
+    }
+
+    public function addEvenement(Evenement $evenement): static
+    {
+        if (!$this->evenements->contains($evenement)) {
+            $this->evenements->add($evenement);
+            $evenement->addActiviterType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvenement(Evenement $evenement): static
+    {
+        if ($this->evenements->removeElement($evenement)) {
+            $evenement->removeActiviterType($this);
         }
 
         return $this;

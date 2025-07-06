@@ -1,3 +1,191 @@
-body {
-    background-color: skyblue;
+body{
+    font-family: Raleway, sans-serif;
+    background: linear-gradient(45deg, #bebdc708 10%,transparent 10%,transparent 90%,#bebdc708 90%),linear-gradient(135deg, transparent 40%, #bebdc706 40%, #bebdc706 60%, transparent 0),linear-gradient(45deg, transparent 40%, #bebdc704 40%, #bebdc704 60%, transparent 0);
+    background-size: 3em 3em;
+    background-color: #ffffff;
+    opacity: 1;
+}
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+li,ol,ul,a {
+    list-style: none;
+    list-style-type: none;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+fieldset{
+    border: none;
+}
+
+
+
+
+.hidden{
+    display: none!important;
+}
+
+
+.modal {
+    position: fixed; /* Couvre toute la fenêtre */
+    z-index: 1040;   /* z-index de base, sera augmenté dynamiquement */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Empêche le scroll de la page entière */
+
+    /* Centrage du dialogue via Flexbox */
+
+    /* Gestion de la visibilité et des événements */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Ignore les clics sur l'overlay par défaut */
+
+    /* Transition pour l'apparition/disparition */
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Classe ajoutée par JS pour rendre la modale visible */
+.modal-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Le dialogue interne de la modale */
+.modal-dialog {
+    position: relative; /* Pour positionnement interne (close button) et transform */
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    width: auto; /* Ajuste la largeur au contenu */
+    max-width: fit-content; /* Limite max pour grands écrans */
+    display: flex; /* Structure interne flexible */
+    flex-direction: column; /* Header, content, footer verticaux */
+    z-index: 1041; /* Au-dessus de l'overlay .modal (sera augmenté dynamiquement) */
+
+    /* Réactive les événements pour le dialogue et son contenu */
+    pointer-events: auto;
+
+    /* Positionnement initial pour le drag via transform */
+    transform: translate(-50%, 2em);
+    left:50%;
+
+    border: 5px solid rgb(149, 149, 149) 10px black dashed;
+    border-style: outset inset inset outset;
+    border-color: rgb(68, 68, 68);
+    border-width: 2px;
+
+
+    /* Empêcher le texte d'être sélectionné lors du drag du dialogue */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* En-tête servant de poignée de drag */
+.modal-header {
+    flex-shrink: 0; /* Empêche le header de rétrécir */
+    padding: 10px 15px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    border-top-left-radius: 6px; /* Arrondis correspondants au dialogue */
+    border-top-right-radius: 6px;
+    cursor: grab; /* Indice visuel pour le drag */
+
+    display: flex;
+    justify-content: space-between; /* Espace entre titre et bouton close */
+    align-items: center;
+}
+
+.modal-header span {
+    font-weight: bold;
+    /* Texte non sélectionnable */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Bouton de fermeture dans l'en-tête */
+.modal-close {
+    font-size: 1.2rem;
+    line-height: 1;
+    padding: 0 5px;
+    color: #666;
+    cursor: pointer;
+    top: auto !important;
+}
+.modal-close:hover {
+    opacity: 1;
+    color: #000;
+}
+
+/* Zone de contenu principal */
+.modal-content {
+    flex-grow: 1; /* Prend l'espace vertical restant */
+    padding: 0px 15px 15px 15px;
+    overflow-y: auto; /* Ajoute un scroll SI le contenu dépasse */
+    /* Réactive la sélection de texte pour le contenu */
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    max-height: 90vh;
+    overflow-y: scroll;
+}
+
+/* Zone pour afficher les erreurs */
+.modal-error {
+    flex-shrink: 0;
+    padding: 5px 15px 10px 15px;
+    color: red;
+    font-size: 0.9em;
+    min-height: 1.2em; /* Pour éviter les sauts de layout */
+}
+
+/* Style pendant le drag actif */
+.modal-header:active,
+body.modal-dragging { /* Ajouter/retirer cette classe sur body via JS si besoin */
+    cursor: grabbing !important; /* Force le curseur pendant le drag */
+}
+
+.disparaitre{
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+    background-color: rgb(189, 2, 2);
+    border-radius: .3em;
+    padding: .3em .3em .3em .5em;
+    color: white;
+    z-index: 2;
+    border: none;
+}
+
+.disparaitre:hover{
+    background-color: rgb(97, 0, 0);
+
+}
+
+.fixed{
+    position: fixed;
+}
+.absolute{
+    position: absolute;
+}
+.haut{
+    top: 0;
+}
+
+.droit{
+    right: 0;
 }
