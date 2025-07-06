@@ -13,7 +13,7 @@ final class ApiController extends AbstractController
 
     public function __construct(private HttpClientInterface $client){}
 
-    #[Route('/api/getLikes/{id}', name: 'app_api')]
+    #[Route('/api/getLikes/{placeId}', name: 'app_api')]
     public function index(int $placeId): Response
     {
         try {
