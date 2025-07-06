@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,8 +15,17 @@ final class ApiController extends AbstractController
     public function __construct(private HttpClientInterface $client){}
 
     #[Route('/api/getLikes/{placeId}', name: 'app_api')]
-    public function index(int $placeId): Response
+    public function index(int $placeId, Request $request): Response
     {
+
+        $expectedToken = $this->getParameter('roblox_api_token'); // Lit la variable depuis .env
+        $receivedToken = $request->headers->get('X-ROBLOX-TOKEN'); // Lit l'en-tête custom
+
+        if ($receivedToken !== $expectedToken) {
+            // Si le token est manquant ou invalide, on retourne une erreur 403 (Interdit)
+            return new JsonResponse(['error' => 'Forbidden: Invalid or missing token'], 403);
+        }
+
         try {
             // Étape 1: Obtenir l'Universe ID à partir du Place ID
             $universeResponse = $this->client->request('GET', "https://apis.roblox.com/universes/v1/places/{$placeId}/universe");
